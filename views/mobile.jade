@@ -4,18 +4,74 @@ html
     title impress.js Remote
     meta(name='viewport', content='width=device-width, initial-scale=1')
     link(rel='stylesheet', href='http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.css')
+    style(type='text/css')
+      
     script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
     script(src='http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js')
+    script(src='/socket.io/socket.io.js')
     script
+      $(function(){
+        $('#slides').hide();
+
+        $('#remoteBtn').live('vclick', function(){
+          $('#remote').show();
+          $('#slides').hide();
+        });
+        $('#slidesBtn').live('vclick', function(){
+          $('#remote').hide();
+          $('#slides').show();
+        });
+
+        var slideId = '#{slideId}';
+        var socket = io.connect();
+  
+        socket.on('connect', function(){
+          socket.emit('mobile_start', {slideId: slideId});
+        });
+
+        socket.on('no_slide_socket', function(){
+          socket.disconnect();
+          alert("No Remote Slides");
+        });
+
+        $('#next').click(function(){
+          socket.emit('mobile_next', {slideId: slideId});
+        });
+        
+        $('#prev').click(function(){
+          socket.emit('mobile_prev', {slideId: slideId});
+        });
+        
+      });
+    
   body
-    div(data-role='page', data-fullscreen="true")
-      div(data-role='header', data-position="fixed")
-        h1 SlideShare Remote
-      div(data-role='content') hello world
-      div(data-role='footer', data-position="fixed")
-        div(data-role='navbar')
+    div(data-role='page')
+      div(data-role='header')
+        h1 impressjs remote
+        div(data-role='navbar', data-iconpos='bottom')
           ul
+            li  
+              a#remoteBtn(href='#', data-icon='gear', class='ui-btn-active') Remote
             li
-              a(href='#') Remote
-            li
-              a(href='#') Slides
+              a#slidesBtn(href='#', data-icon='grid') Slides
+      div#remote(data-role='content')
+        fieldset.ui-grid-a
+          div.ui-block-a
+            a#prev(href='#', data-role='button', data-shadow='false', data-icon='arrow-l', data-iconpos='top') Prev
+          div.ui-block-b
+            a#next(href='#', data-role='button', data-shadow='false', data-icon='arrow-r', data-iconpos='top') Next
+        div
+          div(style='height:50px')
+           h3 dfdfdsffsfsdfds
+          div Content Content content Content Content Content content Content Content Content content Content Content Content content Content Content Content content Content Content Content content Content Content Content content Content Content Content content Content
+      div#slides(data-role='content')
+        div(data-role='collapsible-set')
+          div(data-role='collapsible', data-collapsed='false')
+            h3 Slide1
+            p content content content
+          div(data-role='collapsible')
+            h3 Slide2
+            p content content content
+          div(data-role='collapsible')
+            h3 Slide3
+            p content content content

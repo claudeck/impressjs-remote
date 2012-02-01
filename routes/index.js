@@ -8,5 +8,5 @@ exports.index = function(req, res){
 };
 
 exports.mobile = function(req, res){
-  res.render('mobile', { title: 'Express' })
+  res.render('mobile', { slideId: 'Express' })
 };
