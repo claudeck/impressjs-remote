@@ -495,3 +495,10 @@ a:hover {
     display: block;
 }
 
+#start h1 {
+    font-size: 120px;
+}
+
+#start sup {
+    font-size: 30px;
+}
