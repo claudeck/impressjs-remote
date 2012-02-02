@@ -13,7 +13,7 @@ exports.mobileStart = function(socket, data){
   socket.slideId = data.slideId;
 
   checkSlideSocketAndCallback(socket, function(slide){
-    slide.acceptMobileControl();
+    slide.acceptMobileControl(socket);
   });
 
   socket.on('mobile_next', function(data){
@@ -28,4 +28,9 @@ exports.mobileStart = function(socket, data){
     });
   });
 
+  socket.on('mobile_step', function(data){
+    checkSlideSocketAndCallback(socket, function(slide){
+      slide.step(data);
+    });
+  });
 }

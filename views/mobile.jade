@@ -22,7 +22,8 @@ html
           $('#slides').show();
         });
 
-        var slideId = '#{slideId}';
+        var slideId = '#{slide.slideId}';
+        var steps = !{JSON.stringify(slide.steps)};
         var socket = io.connect();
   
         socket.on('connect', function(){
@@ -34,6 +35,15 @@ html
           alert("No Remote Slides");
         });
 
+        socket.on('current_step', function(data){
+          for(var s = 0; s < steps.length; s++){
+            if(steps[s].id == data.currStepId){
+              $('#stepContent').text(steps[s].text);
+              break;
+            }
+          }    
+        });
+
         $('#next').click(function(){
           socket.emit('mobile_next', {slideId: slideId});
         });
@@ -42,6 +52,10 @@ html
           socket.emit('mobile_prev', {slideId: slideId});
         });
         
+        $('.slideStep').live('vclick', function(){
+          var stepId = $(this).attr('data');
+          socket.emit('mobile_step', {stepId: stepId});
+        });
       });
     
   body
@@ -62,16 +76,12 @@ html
             a#next(href='#', data-role='button', data-shadow='false', data-icon='arrow-r', data-iconpos='top') Next
         div
           div(style='height:50px')
-           h3 dfdfdsffsfsdfds
-          div Content Content content Content Content Content content Content Content Content content Content Content Content content Content Content Content content Content Content Content content Content Content Content content Content Content Content content Content
+           h3 Contents
+          div#stepContent
       div#slides(data-role='content')
         div(data-role='collapsible-set')
-          div(data-role='collapsible', data-collapsed='false')
-            h3 Slide1
-            p content content content
-          div(data-role='collapsible')
-            h3 Slide2
-            p content content content
-          div(data-role='collapsible')
-            h3 Slide3
-            p content content content
+          - slide.steps.forEach(function(step){
+              div(data-role='collapsible')
+                h3.slideStep(data='#{step.id}') #{step.id}
+                p #{step.text}
+          - })

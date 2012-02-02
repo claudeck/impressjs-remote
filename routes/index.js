@@ -1,13 +1,10 @@
-
-/*
- * GET home page.
- */
+var impressjsSocket = require('../impressjs_socket');
 
 exports.index = function(req, res){
   res.render('index', { title: 'Express' })
 };
 
 exports.mobile = function(req, res){
-  var slideId = req.params.slideId;
-  res.render('mobile', { slideId: slideId })
+  var slide = impressjsSocket.get(req.params.slideId);
+  res.render('mobile', { slide: slide })
 };

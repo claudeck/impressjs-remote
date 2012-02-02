@@ -56,18 +56,14 @@ define('jquery',
 
 require(['jquery'], 
   function($){ 
-    var slides = [];  
-    var currSlide = ''; 
-
-    window.addEventListener("hashchange", function(){
-      currSlide = window.location.hash.replace(/^#\/?/,"");
-    }, false);
+    var slideSteps = [];  
+    var currStepId = ''; 
 
     $.getScript(host + '/javascripts/jquery.blockUI.js', function(data, textStatus){
       $.getScript(host + '/javascripts/jquery.qrcode.min.js', function(data, textStatus){
         $.getScript(host + '/socket.io/socket.io.js', function(data, textStatus){
           processImpressjs();
-          connectToServer(slides);
+          connectToServer(slideSteps);
         });
       });
     });
@@ -75,12 +71,12 @@ require(['jquery'],
     function processImpressjs(){
       var steps = $('#impress .step');
       for(var s = 0; s < steps.length; s++){
-        slides.push({
+        slideSteps.push({
           id: $(steps[s]).attr("id"),
           text: $(steps[s]).text()
         });
       }
-      currSlide = slides[0].id;
+      currStepId = slideSteps[0].id;
     }
 
     function connectToServer(){
@@ -88,10 +84,15 @@ require(['jquery'],
 
       var slideId = randomUUID();
 
+      window.addEventListener("hashchange", function(){
+        currStepId = window.location.hash.replace(/^#\/?/,"");
+        socket.emit('current_step', {currStepId: currStepId});
+      }, false);
+
       socket.on('connect', function(){
         socket.emit('add_slide', {
           slideId: slideId,
-          slides: slides
+          steps: slideSteps
         });
       });
 
@@ -109,34 +110,41 @@ require(['jquery'],
 
       socket.on('accept_mobile_control', function(){
         $.unblockUI();
+        socket.emit('current_step', {currStepId: currStepId});
       });
 
       socket.on('next', function(){
-        for(var i = 0; i < slides.length; i++){
-          if(slides[i].id == currSlide){
-            var nextSlideId = currSlide;
-            if(i + 1 == slides.length){
-              nextSlideId = slides[0].id;
+        for(var i = 0; i < slideSteps.length; i++){
+          if(slideSteps[i].id == currStepId){
+            var nextStepId = currStepId;
+            if(i + 1 == slideSteps.length){
+              nextStepId = slideSteps[0].id;
+            }else{
+              nextStepId = slideSteps[i + 1].id;
             }
-            nextSlideId = slides[i + 1].id;
-            window.location.hash = "#/" + nextSlideId;
+            window.location.hash = "#/" + nextStepId;
             break;
           }
         }
       });
 
       socket.on('prev', function(){
-        for(var i = 0; i < slides.length; i++){
-          if(slides[i].id == currSlide){
-            var prevSlideId = currSlide;
+        for(var i = 0; i < slideSteps.length; i++){
+          if(slideSteps[i].id == currStepId){
+            var prevStepId = currStepId;
             if(i == 0){
-              prevSlideId = slides[slides.length - 1].id;
+              prevStepId = slideSteps[slideSteps.length - 1].id;
+            }else{
+              prevStepId = slideSteps[i - 1].id;
             }
-            prevSlideId = slides[i - 1].id;
-            window.location.hash = "#/" + prevSlideId;
+            window.location.hash = "#/" + prevStepId;
             break;
           }
         }
+      });
+
+      socket.on('step', function(data){
+        window.location.hash = "#/" + data.stepId;
       });
 
     }
