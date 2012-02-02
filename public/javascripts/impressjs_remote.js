@@ -45,7 +45,7 @@ function randomUUID() {
 
 //------------------------------------------------
 
-var host = 'http://localhost:8877';
+var host = 'http://www.ipad321.com:8877';
 
 define('jquery',
        ['http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'],
