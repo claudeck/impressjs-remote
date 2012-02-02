@@ -57,7 +57,6 @@ define('jquery',
 require(['jquery'], 
   function($){ 
     var slideSteps = [];  
-    var currStepId = ''; 
 
     $.getScript(host + '/javascripts/jquery.blockUI.js', function(data, textStatus){
       $.getScript(host + '/javascripts/jquery.qrcode.min.js', function(data, textStatus){
@@ -68,6 +67,10 @@ require(['jquery'],
       });
     });
 
+    function getCurrStepId(){
+      return window.location.hash.replace(/^#\/?/,"");
+    }
+
     function processImpressjs(){
       var steps = $('#impress .step');
       for(var s = 0; s < steps.length; s++){
@@ -76,7 +79,6 @@ require(['jquery'],
           text: $(steps[s]).text()
         });
       }
-      currStepId = slideSteps[0].id;
     }
 
     function connectToServer(){
@@ -85,8 +87,7 @@ require(['jquery'],
       var slideId = randomUUID();
 
       window.addEventListener("hashchange", function(){
-        currStepId = window.location.hash.replace(/^#\/?/,"");
-        socket.emit('current_step', {currStepId: currStepId});
+        socket.emit('current_step', {currStepId: getCurrStepId()});
       }, false);
 
       socket.on('connect', function(){
@@ -97,8 +98,8 @@ require(['jquery'],
       });
 
       socket.on('slide_add_success', function(data){
-        $(document.body).append('<div id="qrDialog"><div id="qrcode"></div><div id="qrUrl"></div></div>')
-        $('#qrcode').qrcode(host + '/mobile/' + data.slideId);
+        $(document.body).append('<div id="qrDialog"><div id="qrcode_canvas"></div><div id="qrUrl"></div></div>')
+        $('#qrcode_canvas').qrcode(host + '/mobile/' + data.slideId);
         $('#qrUrl').text(host + '/mobile/' + data.slideId);
         $.blockUI({
           message: $('#qrDialog'),
@@ -110,10 +111,11 @@ require(['jquery'],
 
       socket.on('accept_mobile_control', function(){
         $.unblockUI();
-        socket.emit('current_step', {currStepId: currStepId});
+        socket.emit('current_step', {currStepId: getCurrStepId()});
       });
 
       socket.on('next', function(){
+        var currStepId = getCurrStepId();
         for(var i = 0; i < slideSteps.length; i++){
           if(slideSteps[i].id == currStepId){
             var nextStepId = currStepId;
@@ -129,6 +131,7 @@ require(['jquery'],
       });
 
       socket.on('prev', function(){
+        var currStepId = getCurrStepId();
         for(var i = 0; i < slideSteps.length; i++){
           if(slideSteps[i].id == currStepId){
             var prevStepId = currStepId;

@@ -497,8 +497,21 @@ a:hover {
 
 #start h1 {
     font-size: 120px;
+    border-bottom: 10px solid #000;
 }
 
-#start sup {
+#start p {
+    text-align: right;
     font-size: 30px;
+}
+
+#qrcode {
+    width: 900px;
+    text-align: center;
+    font-size: 60px;
+    line-height: 1;
+}
+
+#qrcode p {
+    padding: 20px 0px 40px 0px;
 }
