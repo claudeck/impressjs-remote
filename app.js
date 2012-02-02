@@ -7,6 +7,8 @@ var express = require('express')
   , routes = require('./routes')
   , io = require('socket.io')
   , util = require('util')
+  , impressjsSocket = require('./impressjs_socket')
+  , mobileSocket = require('./mobile_socket')
 
 var app = module.exports = express.createServer();
 
@@ -35,15 +37,19 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', routes.index);
-app.get('/mobile', routes.mobile);
+app.get('/mobile/:slideId', routes.mobile);
 
 app.listen(8877);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
 socket.sockets.on('connection', function(socket){
   
-  socket.on('slide_share_start', function(data){
-    socket.emit('slide_share_add_success', {slideId: data.slideId});
+  socket.on('add_slide', function(data){
+    impressjsSocket.addSlide(socket, data);
+  });
+
+  socket.on('mobile_start', function(data){
+    mobileSocket.mobileStart(socket, data);
   });
 
 });

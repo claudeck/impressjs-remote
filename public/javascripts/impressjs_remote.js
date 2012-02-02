@@ -55,11 +55,18 @@ define('jquery',
 );
 
 require(['jquery'], 
-  function($){
+  function($){ 
+    var slides = [];  
+    var currSlide = ''; 
+
+    window.addEventListener("hashchange", function(){
+      currSlide = window.location.hash.replace(/^#\/?/,"");
+    }, false);
+
     $.getScript(host + '/javascripts/jquery.blockUI.js', function(data, textStatus){
       $.getScript(host + '/javascripts/jquery.qrcode.min.js', function(data, textStatus){
         $.getScript(host + '/socket.io/socket.io.js', function(data, textStatus){
-          var slides = processImpressjs($);
+          processImpressjs();
           connectToServer(slides);
         });
       });
@@ -67,29 +74,28 @@ require(['jquery'],
 
     function processImpressjs(){
       var steps = $('#impress .step');
-      var slides = [];
       for(var s = 0; s < steps.length; s++){
         slides.push({
           id: $(steps[s]).attr("id"),
           text: $(steps[s]).text()
         });
       }
-      return slides;
+      currSlide = slides[0].id;
     }
 
-    function connectToServer(slides){
+    function connectToServer(){
       var socket = io.connect(host);
 
       var slideId = randomUUID();
 
       socket.on('connect', function(){
-        socket.emit('slide_share_start', {
+        socket.emit('add_slide', {
           slideId: slideId,
           slides: slides
         });
       });
 
-      socket.on('slide_share_add_success', function(data){
+      socket.on('slide_add_success', function(data){
         $(document.body).append('<div id="qrDialog"><div id="qrcode"></div><div id="qrUrl"></div></div>')
         $('#qrcode').qrcode(host + '/mobile/' + data.slideId);
         $('#qrUrl').text(host + '/mobile/' + data.slideId);
@@ -100,6 +106,39 @@ require(['jquery'],
           }
         });
       });
+
+      socket.on('accept_mobile_control', function(){
+        $.unblockUI();
+      });
+
+      socket.on('next', function(){
+        for(var i = 0; i < slides.length; i++){
+          if(slides[i].id == currSlide){
+            var nextSlideId = currSlide;
+            if(i + 1 == slides.length){
+              nextSlideId = slides[0].id;
+            }
+            nextSlideId = slides[i + 1].id;
+            window.location.hash = "#/" + nextSlideId;
+            break;
+          }
+        }
+      });
+
+      socket.on('prev', function(){
+        for(var i = 0; i < slides.length; i++){
+          if(slides[i].id == currSlide){
+            var prevSlideId = currSlide;
+            if(i == 0){
+              prevSlideId = slides[slides.length - 1].id;
+            }
+            prevSlideId = slides[i - 1].id;
+            window.location.hash = "#/" + prevSlideId;
+            break;
+          }
+        }
+      });
+
     }
   }
 );
