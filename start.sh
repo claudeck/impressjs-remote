@@ -1,2 +1,2 @@
 export NODE_ENV=production
-nohup node app.js &
+forever start app.js
