@@ -15,7 +15,7 @@ html
         p power by node.js
       div#bookmarks.step(data-x='1000', data-y='300', data-scale="1")
         p Drop it&#9759; to bookmarks
-        p <a href="javascript: function remote_slideshare() {var d = document,z = d.createElement('scr' + 'ipt'),b = d.body;try {if (!b) throw (0);z.setAttribute('src', 'http://www.ipad321.com:8877/javascripts/impressjs_remote.js');b.appendChild(z);} catch (e) {alert('Please wait until the page has loaded.');}}remote_slideshare();void(0)"><b>IJSRemote</b></a>
+        p <a href="javascript: var ijshost='http://#{server.hostname}:#{server.port}'; function remote_slideshare() {var d = document,z = d.createElement('scr' + 'ipt'),b = d.body;try {if (!b) throw (0);z.setAttribute('src', 'http://#{server.hostname}:#{server.port}/javascripts/impressjs_remote.js');b.appendChild(z);} catch (e) {alert('Please wait until the page has loaded.');}}remote_slideshare();void(0)"><b>IJSRemote</b></a>
         p Safari click <a href='#safari'><b>Here</b></a>
       div#qrcode.step(data-x='1000', data-y='1000', data-z='-1000', data-scale='1.2', data-rotate='90')
         p <i>Click</i> the <b>Bookmark</b>&#9757;
@@ -26,7 +26,7 @@ html
         p <b>Have Fun</b> &#9786;
       div#safari.step(data-x='2500', data-y='2000', data-scale='1')
         p Save Current Page to Bookmark
-        p Copy <input type='text' value="javascript: function remote_slideshare() {var d = document,z = d.createElement('scr' + 'ipt'),b = d.body;try {if (!b) throw (0);z.setAttribute('src', 'http://www.ipad321.com:8877/javascripts/impressjs_remote.js');b.appendChild(z);} catch (e) {alert('Please wait until the page has loaded.');}}remote_slideshare();void(0)"/> to change the bookmark url
+        p Copy <input type='text' value="javascript: var ijshost='http://#{server.hostname}:#{server.port}'; function remote_slideshare() {var d = document,z = d.createElement('scr' + 'ipt'),b = d.body;try {if (!b) throw (0);z.setAttribute('src', 'http://#{server.hostname}:#{server.port}/javascripts/impressjs_remote.js');b.appendChild(z);} catch (e) {alert('Please wait until the page has loaded.');}}remote_slideshare();void(0)"/> to change the bookmark url
         p <a href='#qrcode'><b>Go Back</b></a>
       
     script(src='javascripts/impress.js')

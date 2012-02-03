@@ -9,6 +9,7 @@ var express = require('express')
   , util = require('util')
   , impressjsSocket = require('./impressjs_socket')
   , mobileSocket = require('./mobile_socket')
+  , Server = require('config').Server
 
 var app = module.exports = express.createServer();
 
@@ -39,7 +40,8 @@ app.configure('production', function(){
 app.get('/', routes.index);
 app.get('/mobile/:slideId', routes.mobile);
 
-app.listen(8877);
+console.log(util.inspect(Server));
+app.listen(Server.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
 socket.sockets.on('connection', function(socket){

@@ -45,8 +45,6 @@ function randomUUID() {
 
 //------------------------------------------------
 
-var host = 'http://www.ipad321.com:8877';
-
 define('jquery',
        ['http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'],
        function(){
@@ -58,9 +56,9 @@ require(['jquery'],
   function($){ 
     var slideSteps = [];  
 
-    $.getScript(host + '/javascripts/jquery.blockUI.js', function(data, textStatus){
-      $.getScript(host + '/javascripts/jquery.qrcode.min.js', function(data, textStatus){
-        $.getScript(host + '/socket.io/socket.io.js', function(data, textStatus){
+    $.getScript(ijshost + '/javascripts/jquery.blockUI.js', function(data, textStatus){
+      $.getScript(ijshost + '/javascripts/jquery.qrcode.min.js', function(data, textStatus){
+        $.getScript(ijshost + '/socket.io/socket.io.js', function(data, textStatus){
           processImpressjs();
           connectToServer(slideSteps);
         });
@@ -82,7 +80,7 @@ require(['jquery'],
     }
 
     function connectToServer(){
-      var socket = io.connect(host);
+      var socket = io.connect(ijshost);
 
       var slideId = randomUUID();
 
@@ -99,8 +97,8 @@ require(['jquery'],
 
       socket.on('slide_add_success', function(data){
         $(document.body).append('<div id="qrDialog"><div id="qrcode_canvas"></div><div id="qrUrl"></div></div>')
-        $('#qrcode_canvas').qrcode(host + '/mobile/' + data.slideId);
-        $('#qrUrl').text(host + '/mobile/' + data.slideId);
+        $('#qrcode_canvas').qrcode(ijshost + '/mobile/' + data.slideId);
+        $('#qrUrl').text(ijshost + '/mobile/' + data.slideId);
         $.blockUI({
           message: $('#qrDialog'),
           onUnblock: function(){
