@@ -2,6 +2,7 @@ var impressjsSocket = require('../impressjs_socket');
 var Server = require('config').Server;
 
 exports.index = function(req, res){
+    console.log('dddddd');
   res.render('index', { title: 'Express', server: Server })
 };
 

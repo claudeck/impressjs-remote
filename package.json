@@ -1,11 +1,11 @@
 {
-    "name": "impressjs-remote"
-  , "version": "0.0.1"
-  , "private": true
-  , "dependencies": {
-      "express": "2.5.5"
-    , "jade": ">= 0.0.1"
-    , "socket.io": ">= 0.0.1"
-    , "config": ">= 0.0.1"
-  }
+    "name": "impressjs-remote",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "express": "4.16.1",
+        "jade": ">= 0.0.1",
+        "socket.io": "2.0.4",
+        "config": ">= 0.0.1"
+    }
 }
