@@ -1,2 +1,1 @@
-export NODE_ENV=production
-forever start app.js
+NODE_ENV=production pm2 start app.js
