@@ -21,7 +21,7 @@ require.config({
   paths: {
     'jquery': '/javascripts/jquery.min',
     'blockUI': '/javascripts/jquery.blockUI',
-    'qrcode': '/javascripts/jquery.qrcode.min',
+    'qrcode': '/javascripts/jquery-qrcode.min',
     'socket.io': '/socket.io/socket.io',
     'remote': '/javascripts/remote'
   },
