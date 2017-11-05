@@ -132,6 +132,15 @@ define(['jquery', 'socket.io', 'blockUI', 'qrcode'], function($, io){
         window.location.hash = "#/" + data.stepId;
       });
 
+      var pos = [100, 100];
+      var joyPointer = $('.joy-pointer');
+      socket.on('joy', function(data){
+        for(var i=2;i--;){
+          pos[i]+=data.speed[i]*10;
+        }
+        joyPointer.css({'left':pos[0],'top':pos[1]});
+      })
+
     }
   }
 );

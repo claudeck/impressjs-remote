@@ -68,6 +68,13 @@ html
           //Use various methods of joydiv to fetch the controller state. 
           $('#output').text(JSON.stringify(e.detail.joydiv.getAllDirections()));
         });
+
+        setInterval(function(){
+          var direction = joydiv.getOneDirection();
+          var magnitude = Math.min(2,direction.magnitude);
+          var speed= [Math.sin(direction.angle)*magnitude,-Math.cos(direction.angle)*magnitude];
+          socket.emit('mobile_joy', {speed: speed});
+        }, 33);
       });
     
   body

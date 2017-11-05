@@ -42,6 +42,10 @@ Slide.prototype.step = function(data){
   this.socket.emit('step', data);
 }
 
+Slide.prototype.joy = function(data){
+  this.socket.emit('joy', data);
+}
+
 exports.addSlide = function(socket, data){
   var slide = new Slide(socket, data.slideId, data.steps);
   slides[data.slideId] = slide;

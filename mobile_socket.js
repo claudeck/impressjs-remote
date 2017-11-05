@@ -33,4 +33,10 @@ exports.mobileStart = function(socket, data){
       slide.step(data);
     });
   });
+
+  socket.on('mobile_joy', function(data){
+    checkSlideSocketAndCallback(socket, function(slide){
+      slide.joy(data);
+    });
+  });
 }
