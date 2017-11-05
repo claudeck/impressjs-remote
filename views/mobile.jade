@@ -62,6 +62,12 @@ html
         // controller
         var element = document.getElementById('controller');
         var joydiv = new JoydivModule.Joydiv({'element':element});
+
+        element.addEventListener('joydiv-changed',function(e){
+          //The detail contains only a handle to joydiv which triggered the event. 
+          //Use various methods of joydiv to fetch the controller state. 
+          $('#output').text(JSON.stringify(e.detail.joydiv.getAllDirections()));
+        });
       });
     
   body
@@ -92,6 +98,8 @@ html
             div.joydiv-down
             div.joydiv-trackpad
               div.joydiv-tracker
+          div
+            div#output
       div#slides(data-role='content')
         div(data-role='collapsible-set')
           - slide.steps.forEach(function(step){

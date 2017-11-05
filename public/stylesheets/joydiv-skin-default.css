@@ -82,3 +82,12 @@
 .joydiv-controller .pressed{
   background: #EEF !important;
 }
+
+.output{
+  overflow-y:scroll;
+  word-wrap:break-word;
+  height:100px;
+  border:1px solid #22C;
+  width:200px;
+  font-size:.25cm;
+}
