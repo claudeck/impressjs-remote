@@ -4,10 +4,12 @@ html
     title impress.js Remote
     meta(name='viewport', content='width=device-width, initial-scale=1')
     link(rel='stylesheet', href='http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.css')
+    link(rel='stylesheet', href='/stylesheets/joydiv-skin-default.css')
     style(type='text/css')
       
     script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
     script(src='http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js')
+    script(src='/javascripts/joydiv.js')
     script(src='/socket.io/socket.io.js')
     script.
       $(function(){
@@ -56,6 +58,10 @@ html
           var stepId = $(this).attr('data');
           socket.emit('mobile_step', {stepId: stepId});
         });
+
+        // controller
+        var element = document.getElementById('controller');
+        var joydiv = new JoydivModule.Joydiv({'element':element});
       });
     
   body
@@ -78,6 +84,14 @@ html
           div(style='height:50px')
            h3 Contents
           div#stepContent
+        div.controller
+          div#controller.joydiv-controller
+            div.joydiv-up
+            div.joydiv-left
+            div.joydiv-right
+            div.joydiv-down
+            div.joydiv-trackpad
+              div.joydiv-tracker
       div#slides(data-role='content')
         div(data-role='collapsible-set')
           - slide.steps.forEach(function(step){
