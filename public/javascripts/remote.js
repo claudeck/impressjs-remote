@@ -136,7 +136,7 @@ define(['jquery', 'socket.io', 'blockUI', 'qrcode'], function($, io){
       var joyPointer = $('.joy-pointer');
       socket.on('joy', function(data){
         for(var i=2;i--;){
-          pos[i]+=data.speed[i]*10;
+          pos[i]+=data.speed[i]*15;
         }
         joyPointer.css({'left':pos[0],'top':pos[1]});
       })
