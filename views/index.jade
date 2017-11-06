@@ -2,7 +2,7 @@ doctype html
 html
   head
     meta(charset='utf-8')
-    title Impress.js Remote
+    title Intro Websocket
     link(rel='stylesheet', href='stylesheets/impress-demo.css')
     link(ref='stylesheet', href='http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic')
   body
@@ -11,23 +11,33 @@ html
         | <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
         | <p>For the best experience please use the latest <b>Chrome</b> or <b>Safari</b> browser. Firefox 10 (to be released soon) will also handle it.</p>
       div#start.step(data-x='0', data-y='0', data-scale="1")
-        h1 impress.js Remote
-        p power by node.js
-      div#bookmarks.step(data-x='1000', data-y='300', data-scale="1")
-        p Drop it&#9759; to bookmarks
-        p <a href="javascript: var ijshost='http://#{server.hostname}:#{server.port}'; function remote_slideshare() {var d = document,z = d.createElement('scr' + 'ipt'),b = d.body;try {if (!b) throw (0);z.setAttribute('src', 'http://#{server.hostname}:#{server.port}/javascripts/impressjs_remote.js');b.appendChild(z);} catch (e) {alert('Please wait until the page has loaded.');}}remote_slideshare();void(0)"><b>IJSRemote</b></a>
-        p Safari click <a href='#safari'><b>Here</b></a>
-      div#qrcode.step(data-x='1000', data-y='1000', data-z='-1000', data-scale='1.2', data-rotate='90')
-        p <i>Click</i> the <b>Bookmark</b>&#9757;
-        p <i>Pick up</i> your <b>Mobile</b>
-        p <i>Scan</i> the <b>QR Code</b>
-        p <i>Open</i> the <b>Remote Url</b>
+        h1 Intro Websocket
+        p power by impress.js + websocket
+      div#demo.step(data-x='1000', data-y='300', data-scale="1")
+        p A funny Websocket demo
+        <a href="javascript: var ijshost='http://#{server.hostname}:#{server.port}'; function remote_slideshare() {var d = document,z = d.createElement('scr' + 'ipt'),b = d.body;try {if (!b) throw (0);z.setAttribute('src', 'http://#{server.hostname}:#{server.port}/javascripts/impressjs_remote.js');b.appendChild(z);} catch (e) {alert('Please wait until the page has loaded.');}}remote_slideshare();void(0)"><b>Slide Controller</b></a>
+      div#http.step(data-x='1000', data-y='1000', data-z='-1000', data-scale='1.2', data-rotate='90')
+        h2 传统的HTTP
+        p <i>请求响应模型
+        p <i>无状态
+        p <i>单向(Client => Server)
+      div#methods.step(data-x='1000', data-y='2000', data-z='-1000')
+        h2 以前的方法
+        p Polling
+        p Long-Polling
+        p Flash socket
+      div#websocket.step(data-x='1000', data-y='2000')
+        h2 WebSocket
+        p 双向通讯（Client <=> Server)
+      div#websocket.step(data-x='1000', data-y='2000', data-z='1000')
+        p 即时聊天
+        p 在线游戏
+        p 通知
+      div#next.step(data-x='1000', data-y='2000', data-z='2000')
+        p HTTP/2 Push
+        p PWA(Push Notifications)
       div#remote.step(data-x='500', data-y='1000', data-scale='6')
-        p <b>Have Fun</b> &#9786;
-      div#safari.step(data-x='2500', data-y='2000', data-scale='1')
-        p Save Current Page to Bookmark
-        p Copy <input type='text' value="javascript: var ijshost='http://#{server.hostname}:#{server.port}'; function remote_slideshare() {var d = document,z = d.createElement('scr' + 'ipt'),b = d.body;try {if (!b) throw (0);z.setAttribute('src', 'http://#{server.hostname}:#{server.port}/javascripts/impressjs_remote.js');b.appendChild(z);} catch (e) {alert('Please wait until the page has loaded.');}}remote_slideshare();void(0)"/> to change the bookmark url
-        p <a href='#qrcode'><b>Go Back</b></a>
+        p <b>Thanks you</b> &#9786;
       
     script(src='javascripts/impress.js')
     div.joy-pointer
